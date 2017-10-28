@@ -23,20 +23,20 @@ typedef struct{
 }player2;
 int elegir();
 void seleccion(int opcion,char *nombre);
-void select(int opcion);
+void select(int opcion,int pok2);
 void batalla(char *nombre,char *nombre2);
 
 player1 poke1;
 player2 poke2;
 char *nombre,*nombre2;
-
+int pok,pok2;
 int main(){
 	
 	int c;
 	
 	c = elegir();
 	seleccion(c,nombre);
-	select(c);
+	select(c,pok2);
 	batalla(nombre,nombre2);
 	//cambio();
 	
@@ -49,6 +49,7 @@ int elegir(){
 	
 	int n,opc,opcion,a,aux;
 	opcion = 0;
+	
 	printf("Elige un pokemon\n");
 	printf("1.Piplup\n");
 	printf("2.Chimchar\n" );
@@ -125,28 +126,33 @@ void seleccion(int opcion,char *nombre){
 	
 	switch(opcion){
 		case 1:
+			
 			printf("\nTu elegiste a Piplup\nHealth:%i\nEnergia:%i\nFuerza:%i\n",poke1.vida,poke1.mana,poke1.fuerza);
 			strcpy(nombre,"Piplup");
+			printf("\n");
 		break;
 		
 		case 2:
+		
 			printf("\nTu elegiste a Chimchar\nHealth:%i\nEnergia:%i\nFuerza:%i\n",poke1.vida,poke1.mana,poke1.fuerza);
 			strcpy(nombre,"Chimchar");
+			printf("\n");
 		break;
 	
 		case 3:
+		
 			printf("\nTu elegiste a Turtwig \nHealth:%i\nEnergia:%i\nFuerza:%i\n",poke1.vida,poke1.mana,poke1.fuerza);
 			strcpy(nombre,"Turtwig");
-		
+			printf("\n");
 		break;
 		default:printf("No esta esa opcion");
 	}
 }
 
-void select(int opcion){
+void select(int opcion,int pok2){
 	
 	int opc;
-	
+	pok2 = 3;
 	poke2.vida = 500;
 	poke2.mana = 500;
 	poke2.fuerza =200;
@@ -154,12 +160,13 @@ void select(int opcion){
 	srand(time(NULL));
 	
 	opcion =  1 + rand() %  ((3+1)-1);
-		
-	
+
+
+
 	switch(opcion){
 	
-		
-		
+	
+	
 
 		case 1:
 			printf("\nTu oponente eligio a Piplup\nHealth:%i\nEnergia:%i\nFuerza:%i\n",poke2.vida,poke2.mana,poke2.fuerza);
@@ -187,8 +194,9 @@ void select(int opcion){
 
 void batalla(char *nombre,char *nombre2){
 
-	int op,i,damage,salud,x,energy;
-
+	int op,i,damage,salud,x,energy,pok1,pok2;
+	pok1 = 3;
+	pok2 = 3;
 	damage = 0;
 	
 	poke1.vida = 500;
@@ -243,7 +251,7 @@ void batalla(char *nombre,char *nombre2){
 					
 				case 3:{
 						
-					printf("Has avandonado la batalla\n");
+					printf("Has abandonado la batalla\n");
 					exit(1);
 				break;
 				}	
@@ -265,16 +273,17 @@ void batalla(char *nombre,char *nombre2){
 				case 1:{
 					
 					if(poke1.mana > 0){
-						salud = poke1.vida + (rand() % ((100+1)-1));	
+						salud = (rand() % ((300+1)-1));	
 						printf("\n");
 						
 						printf("%s utiliza sanacion\n",nombre);
 						poke1.vida += salud; 		
 						poke1.mana-=salud;
+						printf("+%i\n",salud);
 						printf("Health:%i\n",poke1.vida);
 						printf("Energia:%i\n",poke1.mana);
 						printf("\n");
-							
+						
 						}
 						else{
 							printf("No tienes suficiente mana\n");
@@ -302,13 +311,14 @@ void batalla(char *nombre,char *nombre2){
 				
 				case 3:{
 					
-						energy = poke1.mana + (rand() %  ((100+1)-1));	
+						energy = (rand() %  ((300+1)-1));	
 						//printf("\n");
 						printf("%s utiliza fruta de mana\n",nombre);
 						poke1.mana+= energy;
+						printf("+%i\n",energy);
 						printf("Energia:%i\n",poke1.mana);
 						printf("\n");
-							 + rand() %  ((3+1)-1);	
+							// + rand() %  ((3+1)-1);	
 					
 					break;
 				}
@@ -329,8 +339,17 @@ void batalla(char *nombre,char *nombre2){
 		printf("\n");
 			
 		 if(poke2.vida < 0){
-			printf("VICTORIA\n");
+			int opcion = 0;
+			pok2--;
+			if(pok2 == 0){
+				printf("Pl 1 Victoria");
 				
+			}
+			else{
+				printf("VICTORIA\n");
+				printf("\npokemones pl2 = %i\n",pok2);
+				select(opcion,pok2);
+			}
 		}
 		
 		 
@@ -346,6 +365,7 @@ void batalla(char *nombre,char *nombre2){
 			poke1.vida -= damage; 	
 			if(poke1.vida < 0){
 				printf("Health : 0");
+				
 			}
 			else{
 				printf("Health:%i\n",poke1.vida);
@@ -354,14 +374,35 @@ void batalla(char *nombre,char *nombre2){
 		printf("\n");
 		
 		}
-				
-	}while(poke2.vida > 0 && poke1.vida > 0 );
-	
+		
 		 if(poke1.vida < 0){
 			
-			printf("DERROTA\n");
+			printf("\nDERROTA\n");
+			pok1--;
+			if(pok1 == 0){
+				printf("\nPl 2 Victoria");
+				exit(1);
+				
+			}
+			else{
+				int opcion = 0;
+				printf("\npokemones pl1 = %i\n",pok1);
+				printf("\nElige un pokemon\n");
+				printf("1.Piplup\n");			
+				printf("2.Chimchar\n" );
+				printf("3.Turtwig\n");
+				scanf("%i",&opcion);
+				printf("\n");
+				seleccion(opcion,nombre);
 			
+			}
+			
+		
 		}
+				
+	}while(pok1 > 0 && pok2 > 0 );
+	
+		
 	
 }
 
